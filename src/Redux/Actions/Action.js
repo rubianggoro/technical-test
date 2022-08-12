@@ -60,7 +60,7 @@ export const dataPokemonDetail = (result) => {
 
 export const fetchPokemonDetail = (id) => {
   return (dispatch) => {
-    dispatch(getPokemonDetail());
+    dispatch(getPokemonDetail()); 
     axios
       .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
       .then((result) => dispatch(dataPokemonDetail(result.data)))
