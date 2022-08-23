@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Container, Row, Breadcrumb, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import Header from '../Components/Header';
 import { fetchPokemonDetail, addMyPokemon } from '../Redux/Actions/Action';
 
 const PokemonDetail = () => {
+	const [dataMyPokemon, setDataMypokemon] = useState([])
 
 	const dispatch = useDispatch()
 	const location = useLocation()
@@ -23,7 +24,6 @@ const PokemonDetail = () => {
   }, [dispatch])
 
 	const pokemonDetail = useSelector((state) => state.getPokemon.dataPokemonDetail)
-	const myPokemonList = useSelector((state) => state.getPokemon.dataMyPokemon)
 
 	// Probabilitas 50%
 	const onCatchPokemon = () => {
@@ -38,6 +38,13 @@ const PokemonDetail = () => {
 	const onNavigate = () => {
 		navigate('/?key=mypokemonlist')
 	}
+
+	// get data from localstorage
+	const items = JSON.parse(localStorage.getItem('dataMyPokemon'))
+
+	useEffect(() => {
+		setDataMypokemon(items)
+	}, [items])
 
   return (
     <div>
@@ -72,7 +79,7 @@ const PokemonDetail = () => {
 					<Row>
 						<Col>
 								<Button onClick={onCatchPokemon} variant="warning" className="me-3 mt-2">Tangkap Pokemon</Button>
-								{myPokemonList?.length !== 0 && <Button onClick={onNavigate} variant="outline-secondary" className='mt-2'>Lihat MyPokemonList</Button>}
+								{(dataMyPokemon !== null && dataMyPokemon?.length !== 0) && <Button onClick={onNavigate} variant="outline-secondary" className='mt-2'>Lihat MyPokemonList</Button>}
 						</Col>
 					</Row>
 				</Container>

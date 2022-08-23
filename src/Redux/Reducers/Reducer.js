@@ -52,16 +52,21 @@ import {
         };
 
       case ADD_MY_POKEMON:
+        const items = JSON.parse(localStorage.getItem('dataMyPokemon')) || []
+        const newItems = [...items, action.result]
+        localStorage.setItem('dataMyPokemon', JSON.stringify(newItems))
         return {
           ...state,
-          dataMyPokemon: [...state.dataMyPokemon, action.result]
+          dataMyPokemon: [...items, action.result]
         };
 
       case DELETE_MY_POKEMON:
+        const dataItems = JSON.parse(localStorage.getItem('dataMyPokemon')) || []
         const dataMyPokemon = [
-          ...state.dataMyPokemon.slice(0, action.index),
-          ...state.dataMyPokemon.slice(action.index + 1)
+          ...dataItems.slice(0, action.index),
+          ...dataItems.slice(action.index + 1)
         ]
+        localStorage.setItem('dataMyPokemon', JSON.stringify(dataMyPokemon))
         return {
           ...state,
           dataMyPokemon

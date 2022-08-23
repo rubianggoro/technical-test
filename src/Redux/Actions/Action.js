@@ -43,6 +43,17 @@ export const getPokemonList = () => {
   };
 };
 
+export const getPokemonListWithParams = (url) => {
+  return (dispatch) => {
+    dispatch(getDataBegin());
+
+    axios
+      .get(url)
+      .then((result) => dispatch(getDataSuccess(result.data)))
+      .catch((error) => dispatch(getDataFailed(error.massage)));
+  };
+};
+
 // Pokemon Detail
 
 export const getPokemonDetail = () => {

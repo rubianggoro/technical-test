@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Container, Row, Table, Spinner, Tab, Tabs } from 'react-bootstrap';
+import { Col, Container, Row, Table, Spinner, Tab, Tabs, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../Components/Header';
 
-import { getPokemonList } from '../Redux/Actions/Action';
+import { getPokemonList, getPokemonListWithParams } from '../Redux/Actions/Action';
 import MyPokemonList from './MyPokemonList';
 
 const PokemonList = () => {
@@ -20,7 +20,7 @@ const PokemonList = () => {
 
 	const dataPokemon = useSelector((state) => state.getPokemon.data?.results)
 	const isLoading = useSelector((state) => state.getPokemon.isLoading)
-
+	const { data: alldata } = useSelector((state) => state.getPokemon)
 
 	useEffect(() => {
     setData(dataPokemon)
@@ -47,6 +47,10 @@ const PokemonList = () => {
   }
 	const { key } = getParams(location)
 
+	const onPaginate = (url) => {
+		dispatch(getPokemonListWithParams(url))
+	}
+
   return (
     <div>
 			<Header/>
@@ -60,6 +64,10 @@ const PokemonList = () => {
 						className="mb-3"
 					>
 						<Tab eventKey="pokemonlist" title="Pokemon List">
+							<div className='text-center py-2'>
+								<Button className='me-2' variant="primary" size="sm" onClick={() => onPaginate(alldata?.previous)} disabled={alldata.previous === null}>Prev</Button>
+								<Button variant="primary" size="sm" onClick={() => onPaginate(alldata?.next)} disabled={alldata.next === null}>Next</Button>
+							</div>
 							<Table striped bordered hover size="sm" responsive='sm'>
 								<thead>
 									<tr>
